@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerSuccessBalancing.Services", "CustomerSuccessBalancing.Services", "{B53DA043-5E51-4048-B17F-315CCB724E8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomerSuccessBalancing.Tests", "CustomerSuccessBalancing.Tests", "{C07ED592-7E26-4B47-8487-ED43F39B855E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerSuccessBalancingService", "CustomerSuccessBalancingServices\CustomerSuccessBalancingService.csproj", "{AE90574E-E81E-48F8-A03F-7192D7715E3D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerSuccessBalancingTest", "CustomerSuccessBalancingTests\CustomerSuccessBalancingTest.csproj", "{A885EBEE-B85A-498A-BE00-F6C91E40FF0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE90574E-E81E-48F8-A03F-7192D7715E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE90574E-E81E-48F8-A03F-7192D7715E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE90574E-E81E-48F8-A03F-7192D7715E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE90574E-E81E-48F8-A03F-7192D7715E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A885EBEE-B85A-498A-BE00-F6C91E40FF0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A885EBEE-B85A-498A-BE00-F6C91E40FF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A885EBEE-B85A-498A-BE00-F6C91E40FF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A885EBEE-B85A-498A-BE00-F6C91E40FF0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AE90574E-E81E-48F8-A03F-7192D7715E3D} = {B53DA043-5E51-4048-B17F-315CCB724E8F}
+		{A885EBEE-B85A-498A-BE00-F6C91E40FF0D} = {C07ED592-7E26-4B47-8487-ED43F39B855E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {79040338-86C1-4923-9CD2-A3D480EB035E}
+	EndGlobalSection
+EndGlobal
