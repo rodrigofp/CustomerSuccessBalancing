@@ -36,7 +36,7 @@ namespace CustomerSuccessBalancingServices
 		{
 			foreach (var client in _clients)
 			{
-				var customerSuccess = GetCustomerSuccessByClientSize(client.Size);
+				var customerSuccess = _customerSuccesses.GetMostAdequadeByClientSize(client.Size);
 
 				if (customerSuccess == null)
 					continue;
@@ -45,23 +45,12 @@ namespace CustomerSuccessBalancingServices
 			}
 		}
 
-		private CustomerSuccess? GetCustomerSuccessByClientSize(int clientSize)
-		{
-			return _customerSuccesses
-				.Where(cs => cs.Level >= clientSize)
-				.MinBy(cs => cs.Level - clientSize);
-		}
-
 		private int GetCustomerSuccessIdWithMostClients()
 		{
-			var maxClientsOnCustomerSuccess = _customerSuccesses.Max(cs => cs.NumberOfClients);
+			var maxNumberOfClients = _customerSuccesses.Max(cs => cs.NumberOfClients);
 
-			var customerSuccess = _customerSuccesses.Where(cs => cs.NumberOfClients == maxClientsOnCustomerSuccess);
-
-			if (customerSuccess.Count() > 1)
-				return 0;
-
-			return customerSuccess.Single().Id;
+			try { return _customerSuccesses.Single(cs => cs.NumberOfClients == maxNumberOfClients).Id; }
+			catch (InvalidOperationException) { return 0; }
 		}
 	}
 }

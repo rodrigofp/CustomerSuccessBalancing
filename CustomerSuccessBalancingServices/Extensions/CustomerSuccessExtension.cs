@@ -20,6 +20,31 @@ namespace CustomerSuccessBalancingService.Extensions
 			return customerSuccesses.Where(cs => !cs.IsAbsence);
 		}
 
+		public static CustomerSuccess? GetMostAdequadeByClientSize(this IEnumerable<CustomerSuccess> customerSuccesses, int clientSize)
+		{
+			var minDifferenceBetweenLevelAndClientSize = int.MaxValue;
+			CustomerSuccess? customerSuccess = null;
+
+			foreach (var cs in customerSuccesses)
+			{
+				if (cs.Level < clientSize)
+					continue;
+
+				if (cs.Level == clientSize)
+					return cs;
+
+				if ((cs.Level - clientSize) < minDifferenceBetweenLevelAndClientSize)
+				{
+					minDifferenceBetweenLevelAndClientSize = cs.Level - clientSize;
+					customerSuccess = cs;
+				}
+
+			}
+
+			return customerSuccess;
+		}
+
+
 		public static bool IsValid(this IEnumerable<CustomerSuccess> customerSuccesses)
 		{
 			if (customerSuccesses.HaveDuplicatedLevels()

@@ -1,4 +1,5 @@
 using CustomerSuccessBalancingServices;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace CustomerSuccessBalacingTest
@@ -48,13 +49,14 @@ namespace CustomerSuccessBalacingTest
 			var timer = Stopwatch.StartNew();
 			timer.Start();
 			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds);
+			var result = balancer.Execute();
 			timer.Stop();
 			var expectedResult = 998;
 
 			Assert.Multiple(() =>
 			{
 				Assert.That(timer.ElapsedMilliseconds, Is.LessThan(1000));
-				Assert.That(balancer.Execute(), Is.EqualTo(expectedResult));
+				Assert.That(result, Is.EqualTo(expectedResult));
 			});
 		}
 
@@ -121,6 +123,16 @@ namespace CustomerSuccessBalacingTest
 			var expectedResult = 1;
 
 			Assert.That(balancer.Execute(), Is.EqualTo(expectedResult));
+		}
+
+		[Test]
+		public void Test_Scenario_Nine()
+		{
+			var customerSuccess = Utils.BuildCustomerSuccess(10, 20, 30);
+			var clients = Utils.BuildClients(10, 9, 8);
+			var csAusenteIds = new int[] { 1, 2, 3 };
+
+			Assert.Throws<ValidationException>(() => new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds));
 		}
 	}
 }
