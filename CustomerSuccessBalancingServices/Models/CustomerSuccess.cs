@@ -36,6 +36,19 @@ namespace CustomerSuccessBalancingService.Models
 			NumberOfClients++;
 		}
 
+		public bool CanAssumeClient(int clientSize)
+		{
+			return Level >= clientSize;
+		}
+
+		public int CalculateGapBetweenLevelAndClientSize(int clientSize)
+		{
+			if (CanAssumeClient(clientSize))
+				return Level - clientSize;
+			else
+				return -1;
+		}
+
 		public override bool IsValid()
 		{
 			if (Id <= MIN_ID

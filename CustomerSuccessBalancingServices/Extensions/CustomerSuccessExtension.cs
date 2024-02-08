@@ -27,18 +27,19 @@ namespace CustomerSuccessBalancingService.Extensions
 
 			foreach (var cs in customerSuccesses)
 			{
-				if (cs.Level < clientSize)
+				var gap = cs.CalculateGapBetweenLevelAndClientSize(clientSize);
+
+				if (gap == -1)
 					continue;
 
-				if (cs.Level == clientSize)
+				if (gap == 0)
 					return cs;
 
-				if ((cs.Level - clientSize) < minDifferenceBetweenLevelAndClientSize)
+				if (gap < minDifferenceBetweenLevelAndClientSize)
 				{
-					minDifferenceBetweenLevelAndClientSize = cs.Level - clientSize;
+					minDifferenceBetweenLevelAndClientSize = gap;
 					customerSuccess = cs;
 				}
-
 			}
 
 			return customerSuccess;

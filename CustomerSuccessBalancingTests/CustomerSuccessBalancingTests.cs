@@ -1,3 +1,4 @@
+using CustomerSuccessBalancingService.Factory;
 using CustomerSuccessBalancingServices;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -7,9 +8,12 @@ namespace CustomerSuccessBalacingTest
 	public class CustomerSuccessBalancingTests
 	{
 
+		private IAllocationStrategyFactory factory;
+
 		[SetUp]
 		public void Setup()
 		{
+			factory = new AllocationByClientSizeStrategyFactory();
 		}
 
 		[Test]
@@ -19,7 +23,7 @@ namespace CustomerSuccessBalacingTest
 			var clients = Utils.BuildClients(90, 20, 70, 40, 60, 10);
 			var csAusenteIds = new int[] { 2, 4 };
 
-			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds);
+			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds, factory);
 			var expectedResult = 1;
 
 			Assert.That(expectedResult, Is.EqualTo(balancer.Execute()));
@@ -32,7 +36,7 @@ namespace CustomerSuccessBalacingTest
 			var clients = Utils.BuildClients(10, 10, 10, 20, 20, 30, 30, 30, 20, 60);
 			var csAusenteIds = Array.Empty<int>();
 
-			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds);
+			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds, factory);
 			var expectedResult = 0;
 
 			Assert.That(balancer.Execute(), Is.EqualTo(expectedResult));
@@ -48,7 +52,7 @@ namespace CustomerSuccessBalacingTest
 			//Set timeout workaround
 			var timer = Stopwatch.StartNew();
 			timer.Start();
-			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds);
+			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds, factory);
 			var result = balancer.Execute();
 			timer.Stop();
 			var expectedResult = 998;
@@ -67,7 +71,7 @@ namespace CustomerSuccessBalacingTest
 			var clients = Utils.BuildClients(10, 10, 10, 20, 20, 30, 30, 30, 20, 60);
 			var csAusenteIds = Array.Empty<int>();
 
-			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds);
+			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds, factory);
 			var expectedResult = 0;
 
 			Assert.That(balancer.Execute(), Is.EqualTo(expectedResult));
@@ -80,7 +84,7 @@ namespace CustomerSuccessBalacingTest
 			var clients = Utils.BuildClients(10, 10, 10, 20, 20, 30, 30, 30, 20, 60);
 			var csAusenteIds = Array.Empty<int>();
 
-			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds);
+			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds, factory);
 			var expectedResult = 1;
 
 			Assert.That(balancer.Execute(), Is.EqualTo(expectedResult));
@@ -93,7 +97,7 @@ namespace CustomerSuccessBalacingTest
 			var clients = Utils.BuildClients(10, 10, 10, 20, 20, 30, 30, 30, 20, 60);
 			var csAusenteIds = new int[] { 1, 3, 2 };
 
-			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds);
+			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds, factory);
 			var expectedResult = 0;
 
 			Assert.That(balancer.Execute(), Is.EqualTo(expectedResult));
@@ -106,7 +110,7 @@ namespace CustomerSuccessBalacingTest
 			var clients = Utils.BuildClients(10, 10, 10, 20, 20, 30, 30, 30, 20, 60);
 			var csAusenteIds = new int[] { 4, 5, 6 };
 
-			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds);
+			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds, factory);
 			var expectedResult = 3;
 
 			Assert.That(balancer.Execute(), Is.EqualTo(expectedResult));
@@ -119,7 +123,7 @@ namespace CustomerSuccessBalacingTest
 			var clients = Utils.BuildClients(90, 70, 20, 40, 60, 10);
 			var csAusenteIds = new int[] { 2, 4 };
 
-			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds);
+			var balancer = new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds, factory);
 			var expectedResult = 1;
 
 			Assert.That(balancer.Execute(), Is.EqualTo(expectedResult));
@@ -132,7 +136,7 @@ namespace CustomerSuccessBalacingTest
 			var clients = Utils.BuildClients(10, 9, 8);
 			var csAusenteIds = new int[] { 1, 2, 3 };
 
-			Assert.Throws<ValidationException>(() => new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds));
+			Assert.Throws<ValidationException>(() => new CustomerSuccessBalancing(customerSuccess, clients, csAusenteIds, factory));
 		}
 	}
 }

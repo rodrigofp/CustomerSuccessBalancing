@@ -1,6 +1,8 @@
 ﻿using ClientSuccessBalancingService.Extensions;
 using CustomerSuccessBalancingService.Extensions;
+using CustomerSuccessBalancingService.Factory;
 using CustomerSuccessBalancingService.Models;
+using CustomerSuccessBalancingService.Strategy;
 using System.ComponentModel.DataAnnotations;
 
 namespace CustomerSuccessBalancingServices
@@ -9,8 +11,9 @@ namespace CustomerSuccessBalancingServices
 	{
 		private readonly IEnumerable<Client> _clients;
 		private readonly IEnumerable<CustomerSuccess> _customerSuccesses;
+		private readonly IAllocationStrategy _allocationStrategy;
 
-		public CustomerSuccessBalancing(IEnumerable<CustomerSuccess> customerSuccesses, IEnumerable<Client> clients, int[] awayCustomerSuccessIds)
+		public CustomerSuccessBalancing(IEnumerable<CustomerSuccess> customerSuccesses, IEnumerable<Client> clients, int[] awayCustomerSuccessIds, IAllocationStrategyFactory factory)
 		{
 			customerSuccesses.SetAbsences(awayCustomerSuccessIds);
 
@@ -18,6 +21,7 @@ namespace CustomerSuccessBalancingServices
 
 			_customerSuccesses = customerSuccesses.GetActive();
 			_clients = clients;
+			_allocationStrategy = factory.CreateStrategy();
 		}
 
 		private static void ValidateData(IEnumerable<CustomerSuccess> customerSuccesses, IEnumerable<Client> clients)
@@ -28,21 +32,9 @@ namespace CustomerSuccessBalancingServices
 
 		public int Execute()
 		{
-			AllocateClientsToCustomerSuccess();
+			_allocationStrategy.AllocateClients(_customerSuccesses, _clients);
+
 			return GetCustomerSuccessIdWithMostClients();
-		}
-
-		private void AllocateClientsToCustomerSuccess()
-		{
-			foreach (var client in _clients)
-			{
-				var customerSuccess = _customerSuccesses.GetMostAdequadeByClientSize(client.Size);
-
-				if (customerSuccess == null)
-					continue;
-
-				customerSuccess.AddClient();
-			}
 		}
 
 		private int GetCustomerSuccessIdWithMostClients()
